@@ -56,7 +56,7 @@ function mainMenu() {
             createRiddle();
             break;
         case "3":
-            readRiddles();
+            showAllRiddle();
             break;
         case "4":
             updateRiddle();
@@ -71,7 +71,7 @@ function mainMenu() {
             console.log("Goodbye!");
             process.exit();
         default:
-            console.log("Invalid choice. Please enter a number between 0 and 6.");
+            console.log("Invalid choice. please enter a number between 0 and 6.");
     }
     mainMenu();
 }

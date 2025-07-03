@@ -1,8 +1,11 @@
-import fs from "fs"
+import fs from "fs";
+import rl from "readline-sync";
+import { Riddle } from "../classes/Riddle.js";
+import { json } from "stream/consumers";
 
-function playGame() {
-    console.log("Starting the game");
-}
+// function playGame() {
+//     console.log("Starting the game");
+// }
 async function showAllRiddle() {
     console.log("======all riddles======");
     try{
@@ -15,12 +18,33 @@ async function showAllRiddle() {
 
     
 }
-function createRiddle() {
+async function createRiddle() {
     console.log("Creating a new riddle");
     
+    try {
+        const riddles = await readRiddles()
+        const id = riddles.length+1;
+        const name = rl.question("insert riddle name");
+        const taskdescription = rl.question("insert description");
+        const correctAnswer = rl.question("insert correct answer");
+        const newRiddle = new Riddle(id,name,taskdescription,correctAnswer)
+        riddles.push(newRiddle)
+        return new Promise((res,rej)=>{
+            fs.writeFile("../riddles/db.txt",JSON.stringify(riddles),(err)=>{
+                if(err){
+                    rej("riddel isn't added " + err)
+                }
+            })
+        })
+        
+    } catch (error) {
+        console.log(error);
+    }
+    
 }
+// createRiddle()
+
 function readRiddles() {
-    console.log("Reading all riddles");
     return new Promise((res,rej)=>{
         fs.readFile("../riddles/db.txt","utf-8",((err,data)=>{
             if(err){
@@ -34,9 +58,10 @@ async function updateRiddle() {
     console.log("Updating an existing riddle");
     try{
         const riddles = await readRiddles()
+        
     }
     catch(err){
-        
+
     }
     
 
