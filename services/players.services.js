@@ -90,11 +90,11 @@ async function deleteplayer() {
     try {
         return new Promise((res, rej) => {
             const idPlayer = rl.question("enter id player:> ")
-            const index = players.findIndex(p => p.id == idPlayer); 
+            const index = players.findIndex(p => p.id == idPlayer);
             if (index === -1) {
                 console.log("player not found");
                 res();
-                
+
             }
             players.splice(index, 1);
             fs.writeFile("../DB/players.txt", JSON.stringify(players), (err) => {
@@ -109,6 +109,25 @@ async function deleteplayer() {
     }
     catch (err) {
         console.log(err);
+    }
+
+}
+// createPlayer()
+// showAllPlayers()
+
+async function showAllPlayersWithLowestTime() {
+    try {
+        const playersRaw = await readPlayers();
+        const players = playersRaw.map(p => {
+            const player = new Player(p.id, p.name)
+            player.times = p.times || []
+            return player
+        })
+        players.forEach(player => {
+            console.log(`Player: ${player.name}, Lowest Time: ${player.getLowestTimes()}`);
+        })
+    } catch (error) {
+        console.log(error);
     }
 
 }

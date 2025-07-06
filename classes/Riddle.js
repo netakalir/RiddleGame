@@ -3,12 +3,12 @@ class Riddle {
     constructor(id, name, taskdescription, correctAnswer) {
         this.id = id;
         this.name = name;
-        this.taskdescription = taskdescription;
+        this.taskDescription = taskdescription;
         this.correctAnswer = correctAnswer
     }
 
     ask() {
-        console.log(`The riddle is: ${this.taskdescription}`)
+        console.log(`The riddle is: ${this.taskDescription}`)
         let answer;
         do {
             answer = rl.question("Enter your answer: ")
