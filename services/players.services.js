@@ -77,13 +77,10 @@ async function updatePlayer() {
                 }
             })
         })
-
-
     }
     catch (err) {
         console.log(error);
     }
-
 }
 
 
@@ -93,7 +90,13 @@ async function deleteplayer() {
     try {
         return new Promise((res, rej) => {
             const idPlayer = rl.question("enter id player:> ")
-            players.splice(idPlayer, 1)
+            const index = players.findIndex(p => p.id == idPlayer); 
+            if (index === -1) {
+                console.log("player not found");
+                res();
+                
+            }
+            players.splice(index, 1);
             fs.writeFile("../DB/players.txt", JSON.stringify(players), (err) => {
                 if (err) {
                     rej(err);
@@ -109,29 +112,6 @@ async function deleteplayer() {
     }
 
 }
-showAllPlayers()
-// createPlayer()
-// updatePlayer()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // function viewLeaderboard() {
