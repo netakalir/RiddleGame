@@ -4,7 +4,7 @@ import { Riddle } from "../classes/Riddle.js";
 import { error } from "console";
 
 
-async function showAllRiddle() {
+export async function showAllRiddle() {
     console.log("======all riddles======");
     try {
         const riddles = await readRiddles()
@@ -15,9 +15,9 @@ async function showAllRiddle() {
     }
 }
 
-function readRiddles() {
+export function readRiddles() {
     return new Promise((res, rej) => {
-        fs.readFile("../DB/riddles.txt", "utf-8", ((err, data) => {
+        fs.readFile("./DB/riddles.txt", "utf-8", ((err, data) => {
             if (err) {
                 rej(err);
             }
@@ -26,12 +26,16 @@ function readRiddles() {
     })
 }
 
-async function createRiddle() {
+export async function createRiddle() {
     console.log("Creating a new riddle");
 
     try {
         const riddles = await readRiddles()
-        const id = riddles.length + 1;
+        let id;
+        do {
+            id = Math.floor(Math.random() * 1000) + 1;
+        }
+        while (riddles.some(riddle => riddles.id === id));
         const name = rl.question("insert riddle name:>");
         const taskdescription = rl.question("insert description:>");
         const correctAnswer = rl.question("insert correct answer:>");
@@ -39,7 +43,7 @@ async function createRiddle() {
         riddles.push(newRiddle)
 
         return new Promise((_res, rej) => {
-            fs.writeFile("../DB/riddles.txt", JSON.stringify(riddles), (err) => {
+            fs.writeFile("./DB/riddles.txt", JSON.stringify(riddles), (err) => {
                 if (err) {
                     rej("riddel isn't added " + err)
                 }
@@ -52,44 +56,56 @@ async function createRiddle() {
 }
 
 
-async function updateRiddle() {
+export async function updateRiddle() {
     console.log("Updating an existing riddle");
     try {
         const riddles = await readRiddles()
         return new Promise((res, rej) => {
             const idreddle = rl.question("enter id reddle")
-            const riddel = riddles[idreddle]
+            const riddle = riddles.find(r => r.id == idreddle);
+            if (!riddle) {
+                console.log("riddle not found");
+                res();
+                return;
+            }
             const newName = rl.question("insert new riddle name:> ")
             const newTaskdescription = rl.question("insert new task description:> ")
             const newCorrectAnswer = rl.question("insert new correct answer:> ")
-            riddel.name = newName;
-            riddel.taskDescription = newTaskdescription;
-            riddel.correctAnswer = newCorrectAnswer;
-            riddles.push(riddel);
-            fs.writeFile("../DB/riddles.txt", JSON.stringify(riddles), (err) => {
+            riddle.name = newName;
+            riddle.taskDescription = newTaskdescription;
+            riddle.correctAnswer = newCorrectAnswer;
+            fs.writeFile("./DB/riddles.txt", JSON.stringify(riddles), (err) => {
                 if (err) {
                     rej("error:" + err);
                 }
+                else{
+                    res()
+                }
             })
         })
-
-
     }
     catch (err) {
         console.log(error);
     }
 
 }
-// updateRiddle()
 
-async function deleteRiddle() {
+
+export async function deleteRiddle() {
     console.log("Deleting a riddle");
     const riddles = await readRiddles()
     try{
         return new Promise((res, rej) => {
         const idreddle = rl.question("enter id reddle:> ")
-        riddles.splice(idreddle, 1)
-        fs.writeFile("../DB/ridles.txt",JSON.stringify(riddles),(err)=>{
+        const riddle = riddles.find(r => r.id == idreddle);
+        const index = riddles.findIndex(r => r.id == idreddle); 
+            if (index === -1) {
+                console.log("riddle not found");
+                res();
+                return;
+            }
+        riddles.splice(index, 1)
+        fs.writeFile("./DB/riddles.txt",JSON.stringify(riddles),(err)=>{
             if(err){
                 rej(err);
             }
@@ -106,6 +122,3 @@ async function deleteRiddle() {
 }
 
 
-export {
-
-}

@@ -1,6 +1,7 @@
 import { Player } from "../classes/Player.js";
 import fs from "fs"
 import rl from "readline-sync"
+import { sayHello } from "../utils/helperFunctions.js";
 
 export function initPlayer() {
     const player = new Player(sayHello());

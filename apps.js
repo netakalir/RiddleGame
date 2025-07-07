@@ -1,3 +1,3 @@
-import { playGame,mainMenu } from "./services/game.services.js";
+import { mainMenu } from "./services/game.services.js";
 
-playGame()
+mainMenu()

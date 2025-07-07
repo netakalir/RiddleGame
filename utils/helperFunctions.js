@@ -1,4 +1,4 @@
-
+import rl from "readline-sync"
 export function calcTimes(cb) {
     const start = Date.now();
     cb()
@@ -14,7 +14,7 @@ export function calcTimes(cb) {
 //     player.recordTime(seconds)
 // }
 
-function sayHello() {
+export function sayHello() {
     console.log("-----welcome to the riddle game-----")
     const name = rl.question("-------what is your name?-----")
     console.log(`--------hello ${name}--------`)

@@ -1,14 +1,13 @@
 import rl from "readline-sync";
-import {initPlayer} from "players.services.js"
+import {initPlayer} from "../services/players.services.js"
 import { calcTimes } from "../utils/helperFunctions.js";
-//ייבוא של החידות
-import { riddle1 } from "../riddles/r1.js";
-import { riddle2 } from "../riddles/r2.js";
-//שמירה של החידות לתוך מערך
-const riddles = [riddle1, riddle2];
+import { readRiddles,showAllRiddle,createRiddle,updateRiddle,deleteRiddle } from "./riddles.services.js";
 
-export function playGame() {
+
+async function playGame() {
     console.log("Starting the game");
+    const riddles = await readRiddles()
+    console.log(riddles);
     const player = initPlayer()
     for (let i = 0; i < riddles.length; i++) {
         calcTimes(() => riddles[i].ask(), player)
@@ -55,5 +54,5 @@ export function mainMenu() {
         default:
             console.log("Invalid choice. please enter a number between 0 and 6.");
     }
-    mainMenu();
+    // mainMenu();
 }
