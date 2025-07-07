@@ -1,14 +1,13 @@
 import rl from "readline-sync";
-import {initPlayer} from "players.services.js"
+import {initPlayer} from "../services/players.services.js"
 import { calcTimes } from "../utils/helperFunctions.js";
-//ייבוא של החידות
-import { riddle1 } from "../riddles/r1.js";
-import { riddle2 } from "../riddles/r2.js";
-//שמירה של החידות לתוך מערך
-const riddles = [riddle1, riddle2];
+import { readRiddles,showAllRiddle,createRiddle,updateRiddle,deleteRiddle } from "./riddles.services.js";
+import { Riddle } from "../classes/Riddle.js";
 
-export function playGame() {
+async function playGame() {
     console.log("Starting the game");
+    const riddlesRaw = await readRiddles()
+    const riddles = riddlesRaw.map(r => new Riddle(r.id,r.name,r.taskDescription, r.correctAnswer))
     const player = initPlayer()
     for (let i = 0; i < riddles.length; i++) {
         calcTimes(() => riddles[i].ask(), player)
@@ -17,7 +16,7 @@ export function playGame() {
 }
 
 
-export function mainMenu() {
+export async function mainMenu() {
     console.log("\n=== Welcome to the Riddle Game ===");
     console.log("What do you want to do?");
     console.log("1. Play the game");
@@ -32,22 +31,22 @@ export function mainMenu() {
 
     switch (choice) {
         case "1":
-            playGame();
+            await playGame();
             break;
         case "2":
-            createRiddle();
+            await createRiddle();
             break;
         case "3":
-            showAllRiddle();
+            await showAllRiddle();
             break;
         case "4":
-            updateRiddle();
+            await updateRiddle();
             break;
         case "5":
-            deleteRiddle();
+            await deleteRiddle();
             break;
         case "6":
-            viewLeaderboard();
+            await viewLeaderboard();
             break;
         case "0":
             console.log("Goodbye!");
@@ -55,5 +54,5 @@ export function mainMenu() {
         default:
             console.log("Invalid choice. please enter a number between 0 and 6.");
     }
-    mainMenu();
+    await mainMenu();
 }
