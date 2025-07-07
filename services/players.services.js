@@ -4,7 +4,8 @@ import rl from "readline-sync"
 import { sayHello } from "../utils/helperFunctions.js";
 
 export function initPlayer() {
-    const player = new Player(sayHello());
+    const name = sayHello()
+    const player = new Player(name);
     return player;
 }
 
@@ -42,14 +43,16 @@ async function createPlayer() {
         while (players.some(player => player.id === id));
 
         const name = rl.question("insert player name:>");
-        const newplayer = new Player(id, name);
+        const newplayer = new Player(id,name);
         players.push(newplayer);
 
-        return new Promise((_res, rej) => {
+        return new Promise((res, rej) => {
             fs.writeFile("../DB/players.txt", JSON.stringify(players), (err) => {
                 if (err) {
                     rej("player isn't added " + err)
                 }
+                res(newplayer)
+                
             })
         })
 
