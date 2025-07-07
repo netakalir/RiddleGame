@@ -16,7 +16,7 @@ async function playGame() {
 }
 
 
-export function mainMenu() {
+export async function mainMenu() {
     console.log("\n=== Welcome to the Riddle Game ===");
     console.log("What do you want to do?");
     console.log("1. Play the game");
@@ -31,22 +31,22 @@ export function mainMenu() {
 
     switch (choice) {
         case "1":
-            playGame();
+            await playGame();
             break;
         case "2":
-            createRiddle();
+            await createRiddle();
             break;
         case "3":
-            showAllRiddle();
+            await showAllRiddle();
             break;
         case "4":
-            updateRiddle();
+            await updateRiddle();
             break;
         case "5":
-            deleteRiddle();
+            await deleteRiddle();
             break;
         case "6":
-            viewLeaderboard();
+            await viewLeaderboard();
             break;
         case "0":
             console.log("Goodbye!");
@@ -54,5 +54,5 @@ export function mainMenu() {
         default:
             console.log("Invalid choice. please enter a number between 0 and 6.");
     }
-    // mainMenu();
+    await mainMenu();
 }
