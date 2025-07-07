@@ -2,7 +2,7 @@ import rl from "readline-sync";
 import {initPlayer} from "../services/players.services.js"
 import { calcTimes } from "../utils/helperFunctions.js";
 import { readRiddles,showAllRiddle,createRiddle,updateRiddle,deleteRiddle } from "./riddles.services.js";
-import { Riddle } from "../classes/Riddle.js";
+import { Riddle } from "../modules/Riddle.js";
 
 async function playGame() {
     console.log("Starting the game");

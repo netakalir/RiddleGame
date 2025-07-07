@@ -1,6 +1,6 @@
 import fs from "fs";
 import rl from "readline-sync";
-import { Riddle } from "../classes/Riddle.js";
+import { Riddle } from "../modules/Riddle.js";
 import { error } from "console";
 
 
