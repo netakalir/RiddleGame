@@ -1,4 +1,4 @@
-import { Player } from "../modules/Player.js";
+import { Player } from "../models/Player.js";
 import fs from "fs"
 import rl from "readline-sync"
 import { sayHello } from "../utils/helperFunctions.js";

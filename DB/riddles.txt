@@ -1,1 +1,0 @@
-[{"id":570,"name":"Math","taskDescription":"how much is 5 + 8 ?","correctAnswer":"13"},{"id":1,"name":"riddle of sound","taskDescription":"i speak whitout a mouth. what am i?","correctAnswer":"echo"},{"id":2,"name":"Hard Math","taskDescription":"how much is 12*12","correctAnswer":"144"}]
