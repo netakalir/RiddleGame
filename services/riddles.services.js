@@ -1,9 +1,9 @@
-import fs from "fs";
+import fs from "fs/promises";
 import rl from "readline-sync";
 import { Riddle } from "../classes/Riddle.js";
-import { error } from "console";
 
 
+//
 export async function showAllRiddle() {
     console.log("======all riddles======");
     try {
@@ -15,15 +15,9 @@ export async function showAllRiddle() {
     }
 }
 
-export function readRiddles() {
-    return new Promise((res, rej) => {
-        fs.readFile("./DB/riddles.txt", "utf-8", ((err, data) => {
-            if (err) {
-                rej(err);
-            }
-            res(JSON.parse(data))
-        }))
-    })
+export async function readRiddles() {
+    const data = await fs.readFile("./DB/riddles.txt", "utf-8")
+    return JSON.parse(data)
 }
 
 export async function createRiddle() {
@@ -35,7 +29,7 @@ export async function createRiddle() {
         do {
             id = Math.floor(Math.random() * 1000) + 1;
         }
-        while (riddles.some(riddle => riddles.id === id));
+        while (riddles.some(riddle => riddle.id === id));
         const name = rl.question("insert riddle name:>");
         const taskdescription = rl.question("insert description:>");
         const correctAnswer = rl.question("insert correct answer:>");
@@ -74,18 +68,18 @@ export async function updateRiddle() {
             riddle.name = newName;
             riddle.taskDescription = newTaskdescription;
             riddle.correctAnswer = newCorrectAnswer;
-            fs.writeFile("./DB/riddles.txt", JSON.stringify(riddles), (err) => {
+            fs.writeFile("./DB/riddles.txt", JSON.stringify(riddles, null, 2), (err) => {
                 if (err) {
                     rej("error:" + err);
                 }
-                else{
+                else {
                     res()
                 }
             })
         })
     }
     catch (err) {
-        console.log(error);
+        console.log(err);
     }
 
 }
@@ -94,31 +88,31 @@ export async function updateRiddle() {
 export async function deleteRiddle() {
     console.log("Deleting a riddle");
     const riddles = await readRiddles()
-    try{
+    try {
         return new Promise((res, rej) => {
-        const idreddle = rl.question("enter id reddle:> ")
-        const riddle = riddles.find(r => r.id == idreddle);
-        const index = riddles.findIndex(r => r.id == idreddle); 
+            const idreddle = rl.question("enter id reddle:> ")
+            const riddle = riddles.find(r => r.id == idreddle);
+            const index = riddles.findIndex(r => r.id == idreddle);
             if (index === -1) {
                 console.log("riddle not found");
                 res();
                 return;
             }
-        riddles.splice(index, 1)
-        fs.writeFile("./DB/riddles.txt",JSON.stringify(riddles),(err)=>{
-            if(err){
-                rej(err);
-            }
-            else{
-                res()
-            }
+            riddles.splice(index, 1)
+            fs.writeFile("./DB/riddles.txt", JSON.stringify(riddles), (err) => {
+                if (err) {
+                    rej(err);
+                }
+                else {
+                    res()
+                }
+            })
         })
-    })
     }
-    catch(err){
+    catch (err) {
         console.log(err);
     }
-   
+
 }
 
 

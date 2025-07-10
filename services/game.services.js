@@ -1,14 +1,21 @@
 import rl from "readline-sync";
-import {initPlayer} from "../services/players.services.js"
-import { calcTimes } from "../utils/helperFunctions.js";
-import { readRiddles,showAllRiddle,createRiddle,updateRiddle,deleteRiddle } from "./riddles.services.js";
+import {getUser} from "../services/players.services.js"
+import { calcTimes,sayHello } from "../utils/helperFunctions.js";
 import { Riddle } from "../classes/Riddle.js";
+import { Player } from "../classes/Player.js";
+import { 
+    readRiddles,
+    showAllRiddle,
+    createRiddle,
+    updateRiddle,
+    deleteRiddle } from "./riddles.services.js";
+
 
 async function playGame() {
     console.log("Starting the game");
     const riddlesRaw = await readRiddles()
     const riddles = riddlesRaw.map(r => new Riddle(r.id,r.name,r.taskDescription, r.correctAnswer))
-    const player = initPlayer()
+    const player = await getUser(sayHello())
     for (let i = 0; i < riddles.length; i++) {
         calcTimes(() => riddles[i].ask(), player)
     }

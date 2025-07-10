@@ -1,14 +1,41 @@
 import { Player } from "../classes/Player.js";
 import fs from "fs"
 import rl from "readline-sync"
-import { sayHello } from "../utils/helperFunctions.js";
+import { genretId } from "../utils/helperFunctions.js";
 
-export function initPlayer() {
-    const name = sayHello()
-    const player = new Player(name);
-    return player;
+export function readPlayers() {
+    return new Promise((res, rej) => {
+        fs.readFile("./DB/players.txt", "utf-8", ((err, data) => {
+            if (err) {
+                rej(err);
+            }
+            res(JSON.parse(data))
+        }))
+    })
 }
 
+export async function getUser(playerName) {
+    const players = await readPlayers()
+    const playerInDB = players.find(p => p.name === playerName)
+    if (playerInDB) {
+        const player = new Player(playerInDB)
+        return player
+    }
+    else {
+        console.log("Creating a new player");
+        const id = genretId()
+        const newplayer = new Player({ id, name: playerName });
+        players.push(newplayer);
+        return new Promise((res, rej) => {
+            fs.writeFile("./DB/players.txt", JSON.stringify(players), (err) => {
+                if (err) {
+                    rej("player isn't added " + err)
+                }
+                res(newplayer)
+            })
+        })
+    }
+}
 
 async function showAllPlayers() {
     console.log("======all players======");
@@ -20,47 +47,6 @@ async function showAllPlayers() {
         console.log("error reading players " + err);
     }
 }
-
-function readPlayers() {
-    return new Promise((res, rej) => {
-        fs.readFile("../DB/players.txt", "utf-8", ((err, data) => {
-            if (err) {
-                rej(err);
-            }
-            res(JSON.parse(data))
-        }))
-    })
-}
-
-async function createPlayer() {
-    console.log("Creating a new player");
-    const players = await readPlayers()
-    try {
-        let id;
-        do {
-            id = Math.floor(Math.random() * 1000) + 1;
-        }
-        while (players.some(player => player.id === id));
-
-        const name = rl.question("insert player name:>");
-        const newplayer = new Player(id,name);
-        players.push(newplayer);
-
-        return new Promise((res, rej) => {
-            fs.writeFile("../DB/players.txt", JSON.stringify(players), (err) => {
-                if (err) {
-                    rej("player isn't added " + err)
-                }
-                res(newplayer)
-                
-            })
-        })
-
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 
 async function updatePlayer() {
     console.log("Updating an existing player");
@@ -98,7 +84,6 @@ async function deleteplayer() {
             if (index === -1) {
                 console.log("player not found");
                 res();
-
             }
             players.splice(index, 1);
             fs.writeFile("../DB/players.txt", JSON.stringify(players), (err) => {
@@ -114,27 +99,25 @@ async function deleteplayer() {
     catch (err) {
         console.log(err);
     }
-
 }
-// createPlayer()
-// showAllPlayers()
 
-async function showAllPlayersWithLowestTime() {
-    try {
-        const playersRaw = await readPlayers();
-        const players = playersRaw.map(p => {
-            const player = new Player(p.id, p.name)
-            player.times = p.times || []
-            return player
-        })
-        players.forEach(player => {
-            console.log(`Player: ${player.name}, Lowest Time: ${player.getLowestTimes()}`);
-        })
-    } catch (error) {
-        console.log(error);
-    }
 
-}
+// async function showAllPlayersWithLowestTime() {
+//     try {
+//         const playersRaw = await readPlayers();
+//         const players = playersRaw.map(p => {
+//             const player = new Player(p.id, p.name)
+//             player.times = p.times || []
+//             return player
+//         })
+//         players.forEach(player => {
+//             console.log(`Player: ${player.name}, Lowest Time: ${player.getLowestTimes()}`);
+//         })
+//     } catch (error) {
+//         console.log(error);
+//     }
+
+// }todo
 
 
 // function viewLeaderboard() {
