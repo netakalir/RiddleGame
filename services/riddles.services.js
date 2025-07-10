@@ -10,11 +10,10 @@ export async function getAllRiddle() {
 
 //הצגת כל החידות
 export async function showAllRiddle() {
-    const res = await fetch("http://localhost:3005/riddles");
-    const riddles = await res.json();
-
+    const res = await fetch("http://localhost:3005/riddles/getAllRiddle");
+    const response = await res.json();
     console.log("\n--- All Riddles ---");
-    riddles.forEach((riddle, i) => {
+    response.riddles.forEach((riddle, i) => {
         console.log(`\nRiddle #${i + 1}`);
         console.log(`ID: ${riddle.id}`);
         console.log(`Name: ${riddle.name}`);
@@ -46,9 +45,10 @@ export async function createRiddle() {
 //עדכון חידה
 export async function updateRiddle() {
     const id = rl.question("Enter riddle ID to update:> ");
+    const name = rl.question("Enter new name:> ");
     const taskDescription = rl.question("Enter new task description:> ");
     const correctAnswer = rl.question("Enter new correct answer:> ");
-    const riddle = { taskDescription, correctAnswer };
+    const riddle = { name, taskDescription, correctAnswer };
 
     const response = await fetch(`http://localhost:3005/riddles/updateRiddle/${id}`, {
         method: "PUT",

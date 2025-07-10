@@ -1,6 +1,6 @@
 import rl from "readline-sync";
 import { getUser, showAllPlayers, } from "../services/players.services.js"
-import { recordTime } from "players.services.js"
+import { recordTime } from "../services/players.services.js";
 import { calcTimes, sayHello } from "../utils/helperFunctions.js";
 import { Riddle } from "../classes/Riddle.js";
 import { Player } from "../classes/Player.js";
@@ -8,14 +8,16 @@ import {
   createRiddle,
   showAllRiddle,
   updateRiddle,
-  deleteRiddle
+  deleteRiddle,
+  getAllRiddle
 } from "./riddles.services.js";
 
 
 async function playGame() {
     console.log("Starting the game");
-    const riddlesRaw = await readRiddles()
-    const riddles = riddlesRaw.map(r => new Riddle(r.id, r.name, r.taskDescription, r.correctAnswer))
+    const data = await getAllRiddle()
+    // console.log(riddlesRaw);
+    const riddles = data.riddles.map(r => new Riddle(r.id, r.name, r.taskDescription, r.correctAnswer))
     const player = await getUser(sayHello())
     for (let i = 0; i < riddles.length; i++) {
         await calcTimes(
