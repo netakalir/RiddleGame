@@ -20,7 +20,7 @@ export async function getUser(playerName) {
 }
 
 export async function recordTime(id, seconds) {
-    await fetch(`http://localhost:3005/players/recordTime/${id}`{
+    await fetch(`http://localhost:3005/players/recordTime/${id}`,{
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ seconds })
