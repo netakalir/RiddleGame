@@ -3,116 +3,57 @@ import rl from "readline-sync";
 import { Riddle } from "../classes/Riddle.js";
 
 
-//
-export async function showAllRiddle() {
-    console.log("======all riddles======");
-    try {
-        const riddles = await readRiddles()
-        console.log(riddles);
-    }
-    catch (err) {
-        console.log("error reading riddles " + err);
-    }
+//קבלה של כל החידות
+export async function getAllRiddle() {
+    const response = await fetch("http://localhost:3005/riddles/getAllRiddle")
+    return await response.json()
 }
 
-export async function readRiddles() {
-    const data = await fs.readFile("./DB/riddles.txt", "utf-8")
-    return JSON.parse(data)
-}
-
+//יצרית חידה
 export async function createRiddle() {
-    console.log("Creating a new riddle");
+    const name = rl.question("Enter riddle name:> ");
+    const taskDescription = rl.question("Enter task description:> ");
+    const correctAnswer = rl.question("Enter correct answer:> ");
 
-    try {
-        const riddles = await readRiddles()
-        let id;
-        do {
-            id = Math.floor(Math.random() * 1000) + 1;
-        }
-        while (riddles.some(riddle => riddle.id === id));
-        const name = rl.question("insert riddle name:>");
-        const taskdescription = rl.question("insert description:>");
-        const correctAnswer = rl.question("insert correct answer:>");
-        const newRiddle = new Riddle(id, name, taskdescription, correctAnswer)
-        riddles.push(newRiddle)
+    const riddle = { name, taskDescription, correctAnswer };
 
-        return new Promise((_res, rej) => {
-            fs.writeFile("./DB/riddles.txt", JSON.stringify(riddles), (err) => {
-                if (err) {
-                    rej("riddel isn't added " + err)
-                }
-            })
-        })
-
-    } catch (error) {
-        console.log(error);
-    }
+    const response = await fetch("http://localhost:3005/riddles/createRiddle", {
+        method:"POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(riddle)
+    });
+    const data = await response.json()
+    console.log("Riddle created");
 }
 
-
+//עדכון חידה
 export async function updateRiddle() {
-    console.log("Updating an existing riddle");
-    try {
-        const riddles = await readRiddles()
-        return new Promise((res, rej) => {
-            const idreddle = rl.question("enter id reddle")
-            const riddle = riddles.find(r => r.id == idreddle);
-            if (!riddle) {
-                console.log("riddle not found");
-                res();
-                return;
-            }
-            const newName = rl.question("insert new riddle name:> ")
-            const newTaskdescription = rl.question("insert new task description:> ")
-            const newCorrectAnswer = rl.question("insert new correct answer:> ")
-            riddle.name = newName;
-            riddle.taskDescription = newTaskdescription;
-            riddle.correctAnswer = newCorrectAnswer;
-            fs.writeFile("./DB/riddles.txt", JSON.stringify(riddles, null, 2), (err) => {
-                if (err) {
-                    rej("error:" + err);
-                }
-                else {
-                    res()
-                }
-            })
-        })
-    }
-    catch (err) {
-        console.log(err);
-    }
+    const id = rl.question("Enter riddle ID to update:> ");
+    const taskDescription = rl.question("Enter new task description:> ");
+    const correctAnswer = rl.question("Enter new correct answer:> ");
+    const riddle = { taskDescription, correctAnswer };
 
+    const response = await fetch(`http://localhost:3005/riddles/updateRiddle/${id}`,{
+        method:"PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(riddle)
+    })
+    const data = await response.json()
+    console.log("Riddle updated");
 }
 
-
+//מחיקת חידה
 export async function deleteRiddle() {
-    console.log("Deleting a riddle");
-    const riddles = await readRiddles()
-    try {
-        return new Promise((res, rej) => {
-            const idreddle = rl.question("enter id reddle:> ")
-            const riddle = riddles.find(r => r.id == idreddle);
-            const index = riddles.findIndex(r => r.id == idreddle);
-            if (index === -1) {
-                console.log("riddle not found");
-                res();
-                return;
-            }
-            riddles.splice(index, 1)
-            fs.writeFile("./DB/riddles.txt", JSON.stringify(riddles), (err) => {
-                if (err) {
-                    rej(err);
-                }
-                else {
-                    res()
-                }
-            })
-        })
-    }
-    catch (err) {
-        console.log(err);
-    }
+    const id = rl.question("Enter riddle ID to delete:> ");
 
+    const response = await fetch(`http://localhost:3005/riddles/deleteRiddle/${id}`, {
+        method: "DELETE"
+    });
+
+    const data = await response.json();
+    console.log("Riddle deleted");
 }
 
 
