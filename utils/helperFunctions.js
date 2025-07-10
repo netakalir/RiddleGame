@@ -1,11 +1,11 @@
 import rl from "readline-sync"
 
-export function calcTimes(cb, player) {
+export async function calcTimes(taskFunction, anlizaFunction) {
     const start = Date.now();
-    cb()
+    await taskFunction()
     const end = Date.now();
     const seconds = Math.floor((end - start) / 1000);
-    player.recordTime(seconds)
+    await anlizaFunction(seconds)
     
 }
 
@@ -14,9 +14,4 @@ export function sayHello() {
     const name = rl.question("-------what is your name?-----")
     console.log(`--------hello ${name}--------`)
     return name;
-}
-
-export function genretId(){
-    const id = Date.now()
-    return id
 }

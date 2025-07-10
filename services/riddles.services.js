@@ -8,6 +8,22 @@ export async function getAllRiddle() {
     return await response.json()
 }
 
+//הצגת כל החידות
+export async function showAllRiddle() {
+    const res = await fetch("http://localhost:3005/riddles");
+    const riddles = await res.json();
+
+    console.log("\n--- All Riddles ---");
+    riddles.forEach((riddle, i) => {
+        console.log(`\nRiddle #${i + 1}`);
+        console.log(`ID: ${riddle.id}`);
+        console.log(`Name: ${riddle.name}`);
+        console.log(`Description: ${riddle.taskDescription}`);
+        console.log(`Answer: ${riddle.correctAnswer}`);
+    });
+}
+
+
 //יצרית חידה
 export async function createRiddle() {
     const name = rl.question("Enter riddle name:> ");
@@ -17,7 +33,7 @@ export async function createRiddle() {
     const riddle = { name, taskDescription, correctAnswer };
 
     const response = await fetch("http://localhost:3005/riddles/createRiddle", {
-        method:"POST",
+        method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
@@ -34,8 +50,8 @@ export async function updateRiddle() {
     const correctAnswer = rl.question("Enter new correct answer:> ");
     const riddle = { taskDescription, correctAnswer };
 
-    const response = await fetch(`http://localhost:3005/riddles/updateRiddle/${id}`,{
-        method:"PUT",
+    const response = await fetch(`http://localhost:3005/riddles/updateRiddle/${id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(riddle)
     })

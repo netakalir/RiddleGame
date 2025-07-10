@@ -1,23 +1,30 @@
 import rl from "readline-sync";
-import {getUser} from "../services/players.services.js"
-import { calcTimes,sayHello } from "../utils/helperFunctions.js";
+import { getUser, } from "../services/players.services.js"
+import { recordTime } from "players.services.js"
+import { calcTimes, sayHello } from "../utils/helperFunctions.js";
 import { Riddle } from "../classes/Riddle.js";
 import { Player } from "../classes/Player.js";
-import { 
-    readRiddles,
-    showAllRiddle,
-    createRiddle,
-    updateRiddle,
-    deleteRiddle } from "./riddles.services.js";
+import {
+  createRiddle,
+  showAllRiddle,
+  updateRiddle,
+  deleteRiddle
+} from "./riddles.services.js";
 
 
 async function playGame() {
     console.log("Starting the game");
     const riddlesRaw = await readRiddles()
-    const riddles = riddlesRaw.map(r => new Riddle(r.id,r.name,r.taskDescription, r.correctAnswer))
+    const riddles = riddlesRaw.map(r => new Riddle(r.id, r.name, r.taskDescription, r.correctAnswer))
     const player = await getUser(sayHello())
     for (let i = 0; i < riddles.length; i++) {
-        calcTimes(() => riddles[i].ask(), player)
+        await calcTimes(
+            () => riddles[i].ask(),
+            async (seconds) =>{
+                player.recordTime(seconds)//שמירה לוקלאית לצורך חישובים והצגת סטיסטיקה
+                await recordTime(player.id,seconds)// שליחה לשרת על ידי פונקציה שקיימת אצלו
+            }
+        )
     }
     player.showStats()
 }
@@ -34,7 +41,7 @@ export async function mainMenu() {
     console.log("6. View leaderboard");
     console.log("0. Exit");
 
-    const choice = rl.question("Enter your choice (0-6): ");
+    const choice = rl.question("Enter your choice (0-6):> ");
 
     switch (choice) {
         case "1":
