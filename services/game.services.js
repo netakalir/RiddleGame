@@ -1,5 +1,5 @@
 import rl from "readline-sync";
-import { getUser, } from "../services/players.services.js"
+import { getUser, showAllPlayers, } from "../services/players.services.js"
 import { recordTime } from "players.services.js"
 import { calcTimes, sayHello } from "../utils/helperFunctions.js";
 import { Riddle } from "../classes/Riddle.js";
@@ -39,6 +39,7 @@ export async function mainMenu() {
     console.log("4. Update an existing riddle");
     console.log("5. Delete a riddle");
     console.log("6. View leaderboard");
+    console.log("7. Show all players")
     console.log("0. Exit");
 
     const choice = rl.question("Enter your choice (0-6):> ");
@@ -61,6 +62,9 @@ export async function mainMenu() {
             break;
         case "6":
             await viewLeaderboard();
+            break;
+        case "7":
+            await showAllPlayers()
             break;
         case "0":
             console.log("Goodbye!");

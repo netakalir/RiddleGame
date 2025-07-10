@@ -1,7 +1,6 @@
 import { Player } from "../classes/Player.js";
-import fs from "fs"
 import rl from "readline-sync"
-import { genretId } from "../utils/helperFunctions.js";
+
 
 export function readPlayers() {
     return new Promise((res, rej) => {
@@ -15,37 +14,30 @@ export function readPlayers() {
 }
 
 export async function getUser(playerName) {
-    const players = await readPlayers()
-    const playerInDB = players.find(p => p.name === playerName)
-    if (playerInDB) {
-        const player = new Player(playerInDB)
-        return player
-    }
-    else {
-        console.log("Creating a new player");
-        const id = genretId()
-        const newplayer = new Player({ id, name: playerName });
-        players.push(newplayer);
-        return new Promise((res, rej) => {
-            fs.writeFile("./DB/players.txt", JSON.stringify(players), (err) => {
-                if (err) {
-                    rej("player isn't added " + err)
-                }
-                res(newplayer)
-            })
-        })
-    }
+    const response = await fetch(`http://localhost:3005/players/${playerName}`)
+    const data = await response.json()
+    return new Player(data)
 }
 
-async function showAllPlayers() {
-    console.log("======all players======");
-    try {
-        const players = await readPlayers()
-        console.log(players);
-    }
-    catch (err) {
-        console.log("error reading players " + err);
-    }
+export async function recordTime(id, seconds) {
+    await fetch(`http://localhost:3005/players/recordTime/${id}`{
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ seconds })
+    })
+}
+
+export async function showAllPlayers() {
+  const res = await fetch("http://localhost:3005/players");
+  const players = await res.json();
+
+  console.log("\n--- All Players ---");
+  players.forEach((player, i) => {
+    console.log(`\nPlayer #${i + 1}`);
+    console.log(`ID: ${player.id}`);
+    console.log(`Name: ${player.name}`);
+    console.log(`Times: ${player.times.join(", ") || "None"}`);
+  });
 }
 
 
