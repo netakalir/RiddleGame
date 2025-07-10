@@ -1,6 +1,5 @@
-import fs from "fs/promises";
 import rl from "readline-sync";
-import { Riddle } from "../classes/Riddle.js";
+
 
 
 //קבלה של כל החידות
