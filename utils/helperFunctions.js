@@ -1,8 +1,8 @@
 import rl from "readline-sync"
 
-export async function calcTimes(taskFunction, anlizaFunction) {
+export async function calcTimes(cb, anlizaFunction) {
     const start = Date.now();
-    await taskFunction()
+    await cb()
     const end = Date.now();
     const seconds = Math.floor((end - start) / 1000);
     await anlizaFunction(seconds)

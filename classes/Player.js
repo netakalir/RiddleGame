@@ -8,6 +8,7 @@ class Player {
 
     async recordTime(second) {
         this.times.push(second);
+        
     }
 
     getLowestTimes() {

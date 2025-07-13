@@ -16,7 +16,6 @@ import {
 async function playGame() {
     console.log("Starting the game");
     const data = await getAllRiddle()
-    // console.log(riddlesRaw);
     const riddles = data.riddles.map(r => new Riddle(r.id, r.name, r.taskDescription, r.correctAnswer))
     const player = await getUser(sayHello())
     for (let i = 0; i < riddles.length; i++) {
