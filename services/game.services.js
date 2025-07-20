@@ -13,49 +13,30 @@ import {
 } from "./riddles.services.js";
 
 
-async function playGame() {
-    let data;
-    try {
-        data = await getAllRiddle()
-    } catch (error) {
-        console.log("err 1:", error);
-    }
-    console.log("Starting the game");
-    let riddles;
-    try {
-        riddles = data.riddles.map(r => new Riddle(r.id, r.name, r.taskDescription, r.correctAnswer))
-    } catch (error) {
-        console.log("err 2:", error);
-    }
-    let name;
-    let player;
-    try {
-        name = await sayHello()
-        player = await getUser(name);
-        console.log(player);
-    } catch (error) {
-        console.log("err 3:", error);
-    }
+async function playGame() {//init the game
+    const data = await getAllRiddle();
+    const riddles = data.riddles.map(r => new Riddle(r.id, r.name, r.taskDescription, r.correctAnswer));
+    const name = await sayHello();
+    const player = await getUser(name);
+
     for (let i = 0; i < riddles.length; i++) {
         await calcTimes(
             () => riddles[i].ask(),
             async (seconds) => {
-                player.recordTime(seconds)//שמירה לוקלאית לצורך חישובים והצגת סטיסטיקה
+                player.recordTime(seconds); // שמירה לוקאלית
                 try {
-                    await recordTime(player.id, seconds)// שליחה לשרת על ידי פונקציה שקיימת אצלו
-                    console.log(player.name, seconds);
-                    
+                    await recordTime(player.id, seconds); // שליחה לשרת
                 } catch (error) {
-                    console.log("err 4:", error);
+                    console.error("Failed to record time to server:", error);
                 }
             }
-        )
+        );
     }
-    player.showStats()
+    player.showStats();
 }
 
 
-export async function mainMenu() {
+export async function mainMenu() {//show manu
     console.log("\n=== Welcome to the Riddle Game ===");
     console.log("What do you want to do?");
     console.log("1. Play the game");

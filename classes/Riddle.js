@@ -1,5 +1,5 @@
 import rl from "readline-sync";
-class Riddle {
+class Riddle {//model of riddle
     constructor(id, name, taskdescription, correctAnswer) {
         this.id = id;
         this.name = name;
@@ -7,7 +7,7 @@ class Riddle {
         this.correctAnswer = correctAnswer
     }
 
-    ask() {
+    ask() {//question the gaemer riddle
         console.log(`The riddle is: ${this.taskDescription}`)
         let answer;
         do {

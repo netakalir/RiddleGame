@@ -1,15 +1,12 @@
 import rl from "readline-sync";
 
 
-
-//קבלה של כל החידות
-export async function getAllRiddle() {
+export async function getAllRiddle() {//get all riddles by requesting from the server
     const response = await fetch("http://localhost:3005/riddles/getAllRiddle")
     return await response.json()
 }
 
-//הצגת כל החידות
-export async function showAllRiddle() {
+export async function showAllRiddle() {//show all riddles by requesting from the server
     const res = await fetch("http://localhost:3005/riddles/getAllRiddle");
     const response = await res.json();
     console.log("\n--- All Riddles ---");
@@ -22,9 +19,7 @@ export async function showAllRiddle() {
     });
 }
 
-
-//יצרית חידה
-export async function createRiddle() {
+export async function createRiddle() {//create riddle by requesting from the server
     const name = rl.question("Enter riddle name:> ");
     const taskDescription = rl.question("Enter task description:> ");
     const correctAnswer = rl.question("Enter correct answer:> ");
@@ -42,8 +37,7 @@ export async function createRiddle() {
     console.log("Riddle created");
 }
 
-//עדכון חידה
-export async function updateRiddle() {
+export async function updateRiddle() {//update riddle by requesting from the server
     const id = rl.question("Enter riddle ID to update:> ");
     const name = rl.question("Enter new name:> ");
     const taskDescription = rl.question("Enter new task description:> ");
@@ -60,8 +54,7 @@ export async function updateRiddle() {
     console.log("Riddle updated");
 }
 
-//מחיקת חידה
-export async function deleteRiddle() {
+export async function deleteRiddle() {//delete riddle by requesting from the server
     const id = rl.question("Enter riddle ID to delete:> ");
 
     const response = await fetch(`/${id}`, {
