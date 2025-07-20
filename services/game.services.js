@@ -5,25 +5,49 @@ import { calcTimes, sayHello } from "../utils/helperFunctions.js";
 import { Riddle } from "../classes/Riddle.js";
 import { Player } from "../classes/Player.js";
 import {
-  createRiddle,
-  showAllRiddle,
-  updateRiddle,
-  deleteRiddle,
-  getAllRiddle
+    createRiddle,
+    showAllRiddle,
+    updateRiddle,
+    deleteRiddle,
+    getAllRiddle
 } from "./riddles.services.js";
 
 
 async function playGame() {
+    let data;
+    try {
+        data = await getAllRiddle()
+    } catch (error) {
+        console.log("err 1:", error);
+    }
     console.log("Starting the game");
-    const data = await getAllRiddle()
-    const riddles = data.riddles.map(r => new Riddle(r.id, r.name, r.taskDescription, r.correctAnswer))
-    const player = await getUser(sayHello())
+    let riddles;
+    try {
+        riddles = data.riddles.map(r => new Riddle(r.id, r.name, r.taskDescription, r.correctAnswer))
+    } catch (error) {
+        console.log("err 2:", error);
+    }
+    let name;
+    let player;
+    try {
+        name = await sayHello()
+        player = await getUser(name);
+        console.log(player);
+    } catch (error) {
+        console.log("err 3:", error);
+    }
     for (let i = 0; i < riddles.length; i++) {
         await calcTimes(
             () => riddles[i].ask(),
-            async (seconds) =>{
+            async (seconds) => {
                 player.recordTime(seconds)//שמירה לוקלאית לצורך חישובים והצגת סטיסטיקה
-                await recordTime(player.id,seconds)// שליחה לשרת על ידי פונקציה שקיימת אצלו
+                try {
+                    await recordTime(player.id, seconds)// שליחה לשרת על ידי פונקציה שקיימת אצלו
+                    console.log(player.name, seconds);
+                    
+                } catch (error) {
+                    console.log("err 4:", error);
+                }
             }
         )
     }

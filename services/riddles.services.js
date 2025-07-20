@@ -15,7 +15,7 @@ export async function showAllRiddle() {
     console.log("\n--- All Riddles ---");
     response.riddles.forEach((riddle, i) => {
         console.log(`\nRiddle #${i + 1}`);
-        console.log(`ID: ${riddle.id}`);
+        // console.log(`ID: ${riddle.id}`);todo
         console.log(`Name: ${riddle.name}`);
         console.log(`Description: ${riddle.taskDescription}`);
         console.log(`Answer: ${riddle.correctAnswer}`);
@@ -48,6 +48,7 @@ export async function updateRiddle() {
     const name = rl.question("Enter new name:> ");
     const taskDescription = rl.question("Enter new task description:> ");
     const correctAnswer = rl.question("Enter new correct answer:> ");
+
     const riddle = { name, taskDescription, correctAnswer };
 
     const response = await fetch(`http://localhost:3005/riddles/updateRiddle/${id}`, {
@@ -63,7 +64,7 @@ export async function updateRiddle() {
 export async function deleteRiddle() {
     const id = rl.question("Enter riddle ID to delete:> ");
 
-    const response = await fetch(`http://localhost:3005/riddles/deleteRiddle/${id}`, {
+    const response = await fetch(`/${id}`, {
         method: "DELETE"
     });
 

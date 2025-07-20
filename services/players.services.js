@@ -14,30 +14,35 @@ export function readPlayers() {
 }
 
 export async function getUser(playerName) {
-    const response = await fetch(`http://localhost:3005/players/${playerName}`)
+    const response = await fetch(`http://localhost:3005/players/getPlayer/${playerName}`,{
+        method:"POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name:playerName })
+    })
+    if (!response.ok) throw new Error("Player not found on server");
     const data = await response.json()
-    return new Player(data)
+    return new Player(data.newPlayer)
 }
 
 export async function recordTime(id, seconds) {
-    await fetch(`http://localhost:3005/players/recordTime/${id}`,{
+    await fetch(`http://localhost:3005/players/${id}/recordTime`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ seconds })
+        body: JSON.stringify({ times:seconds })
     })
 }
 
 export async function showAllPlayers() {
-  const res = await fetch("http://localhost:3005/players");
-  const players = await res.json();
+    const res = await fetch("http://localhost:3005/players/getAllPlayers");
+    const players = await res.json();
 
-  console.log("\n--- All Players ---");
-  players.forEach((player, i) => {
-    console.log(`\nPlayer #${i + 1}`);
-    console.log(`ID: ${player.id}`);
-    console.log(`Name: ${player.name}`);
-    console.log(`Times: ${player.times.join(", ") || "None"}`);
-  });
+    console.log("\n--- All Players ---");
+    players.players.forEach((player, i) => {
+        console.log(`\nPlayer #${i + 1}`);
+        console.log(`ID: ${player.id}`);
+        console.log(`Name: ${player.name}`);
+        console.log(`Times: ${player.times.join(", ") || "None"}`);
+    });
 }
 
 
