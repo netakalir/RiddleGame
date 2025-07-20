@@ -46,4 +46,15 @@ export async function showAllPlayers() {
 }
 
 
+export async function viewLeaderboard() {
+    try {
+        const res = await fetch("http://localhost:3005/players/getBestPlayer",{
+            method:"GET",
+            headers:{ "Content-Type": "application/json" }
+        });
+        console.log(await res.json())
 
+    } catch (error) {
+        console.error(error);
+    }
+}

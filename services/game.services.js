@@ -1,6 +1,6 @@
 import rl from "readline-sync";
 import { getUser, showAllPlayers, } from "../services/players.services.js"
-import { recordTime } from "../services/players.services.js";
+import { recordTime,viewLeaderboard } from "../services/players.services.js";
 import { calcTimes, sayHello } from "../utils/helperFunctions.js";
 import { Riddle } from "../classes/Riddle.js";
 import { Player } from "../classes/Player.js";

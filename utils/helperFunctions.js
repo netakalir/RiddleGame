@@ -16,10 +16,4 @@ export async function sayHello() {
     return name;
 }
 
-export async function viewLeaderboard() {
-    try {
-        
-    } catch (error) {
-        console.error(error);
-    }
-}
+
