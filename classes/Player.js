@@ -2,6 +2,8 @@ class Player {
     constructor(player) {
         this.id = player.id;
         this.name = player.name;
+        this.role = player.role
+        this.password = player.password
         this.times = player.times || [];
 
     }

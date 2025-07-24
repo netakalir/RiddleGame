@@ -1,3 +1,4 @@
-import { mainMenu } from "./services/game.services.js";
+import { adminMenu,userMenu } from "./utils/menus.js";
+import { authenticate } from "./utils/helperFunctions.js";
+await authenticate()
 
-mainMenu()
