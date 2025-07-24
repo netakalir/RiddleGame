@@ -1,5 +1,5 @@
 import rl from "readline-sync"
-import { register,login } from "../services/auth.servises.js";
+import { register, login } from "../services/auth.servises.js";
 
 
 export async function calcTimes(cb, anlizaFunction) {//calculate time. helper func
@@ -43,19 +43,21 @@ export async function enter() {
 
 export async function authenticate() {
     const choice = Number.parseInt(rl.question("Enter choice [1-Register / 2-Login]: "))
-    console.log("choice",choice);
+    console.log("choice", choice);
     switch (choice) {
         case 1:
+            console.log("try to fatch");
             await register()
-            console.log("neta");
-            
+            console.log("fatch");
+
+
             break;
 
         case 2:
             await login()
             break
 
-        
+
     }
 }
 
