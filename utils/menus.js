@@ -7,9 +7,10 @@ import {
 } from "../services/riddles.services.js";
 import { playGame } from "../services/game.services.js";
 import { showAllPlayers,viewLeaderboard } from "../services/players.services.js";
+import { login } from "../services/auth.servises.js";
 import rl from "readline-sync"
 
-export async function userMenu() {
+export async function userMenu(playerName) {
     console.log("\n=== Welcome to the Riddle Game ===");
     console.log("What do you want to do?");
     console.log("1. Play the game");
@@ -20,7 +21,7 @@ export async function userMenu() {
 
     switch (choice) {
         case "1":
-            await playGame();
+            await playGame(playerName);
             break;
         case "2":
             await createRiddle();
@@ -38,7 +39,7 @@ export async function userMenu() {
 
 }
 
-export async function adminMenu() {
+export async function adminMenu(playerName) {
     console.log("\n=== Welcome to the Riddle Game ===");
     console.log("What do you want to do?");
     console.log("1. Play the game");
@@ -54,7 +55,7 @@ export async function adminMenu() {
 
     switch (choice) {
         case "1":
-            await playGame();
+            await playGame(playerName);
             break;
         case "2":
             await createRiddle();

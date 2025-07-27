@@ -61,10 +61,10 @@ export async function authenticate() {
                 console.log("login successfully");
 
                 if(response.player.role === "admin"){
-                    await adminMenu()
+                    await adminMenu(response.player.name)
                 }
                 else if(response.player.role === "user"){
-                    await userMenu()
+                    await userMenu(response.player.name)
                 }
                 
                 break;

@@ -25,7 +25,7 @@ class Player {
             sum += this.times[i];
         }
         avg = sum / this.times.length
-        console.log(`great job, ${this.name}!!!!!!!`)
+        console.log(`great job, ${name}!!!!!!!`)
         console.log(`Totel time: ${sum} seconds`);
         console.log(`Average per riddle: ${avg} seconds`);
     }
