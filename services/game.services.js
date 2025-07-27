@@ -6,29 +6,6 @@ import { Riddle } from "../classes/Riddle.js";
 import { Player } from "../classes/Player.js";
 
 
-
-// export async function playGame() {//init the game
-//     const data = await getAllRiddle();
-//     const riddles = data.riddles
-//     riddles.map(r => new Riddle(r.id, r.name, r.taskDescription, r.correctAnswer));
-//     const playerData = await enter();
-//     const player = await getUser(playerData);
-//     for (let i = 0; i < riddles.length; i++) {
-//         await calcTimes(
-//             () => riddles[i].ask(),
-//             async (seconds) => {
-//                 player.recordTime(seconds); // שמירה לוקאלית
-//                 try {
-//                     await recordTime(player.id, seconds); // שליחה לשרת
-//                 } catch (error) {
-//                     console.error("Failed to record time to server:", error);
-//                 }
-//             }
-//         );
-//     }
-//     player.showStats();
-// }
-
 export async function playGame(playerName) {
     try {
         const data = await getAllRiddle()
@@ -41,9 +18,9 @@ export async function playGame(playerName) {
             await calcTimes(
                 () => riddlesArray[i].ask(),
                 async (seconds) => {
-                    playerInstance.recordTime(seconds); // שמירה לוקאלית
+                    playerInstance.recordTime(seconds); // local save
                     try {
-                        await recordTime(playerObj.id, seconds); // שליחה לשרת
+                        await recordTime(playerObj.id, seconds); // send to server
                     } catch (error) {
                         console.error("Failed to record time to server:", error);
                     }
@@ -51,7 +28,6 @@ export async function playGame(playerName) {
             );
         }
         playerInstance.showStats();
-
 
     } catch (error) {
         console.error(error);
