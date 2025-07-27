@@ -5,6 +5,8 @@ import {
     deleteRiddle,
     getAllRiddle
 } from "../services/riddles.services.js";
+import { playGame } from "../services/game.services.js";
+import { showAllPlayers,viewLeaderboard } from "../services/players.services.js";
 import rl from "readline-sync"
 
 export async function userMenu() {

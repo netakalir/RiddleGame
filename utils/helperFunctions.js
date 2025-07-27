@@ -1,5 +1,6 @@
 import rl from "readline-sync"
 import { register, login } from "../services/auth.servises.js";
+import { adminMenu,userMenu } from "./menus.js";
 
 
 export async function calcTimes(cb, anlizaFunction) {//calculate time. helper func
@@ -43,19 +44,33 @@ export async function enter() {
 
 export async function authenticate() {
     const choice = Number.parseInt(rl.question("Enter choice [1-Register / 2-Login]: "))
-    console.log("choice", choice);
     switch (choice) {
         case 1:
-            console.log("try to fatch");
-            await register()
-            console.log("fatch");
-
-
+            try {
+                await register()
+                console.log("Registration was successful.");
+            } catch (error) {
+                console.error("Registration faild:> ", error);
+            }
             break;
 
         case 2:
-            await login()
-            break
+            try {
+                const response = await login()
+                // if (!response) return; 
+                console.log("login successfully");
+
+                if(response.player.role === "admin"){
+                    await adminMenu()
+                }
+                else if(response.player.role === "user"){
+                    await userMenu()
+                }
+                
+                break;
+            } catch (error) {
+                console.error("login faild:> ", error);
+            }
 
 
     }
