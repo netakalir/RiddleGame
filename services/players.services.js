@@ -2,23 +2,6 @@ import { Player } from "../classes/Player.js";
 
 
 
-// export async function getUser(player) {//ask from server get all players
-//     try {
-//         const response = await fetch(`http://localhost:3005/players/getPlayer/${player.name}`, {
-//             method: "GET",
-//             headers: { "Content-Type": "application/json" },
-//             // body: JSON.stringify({ name: player.name, password: player.password })
-//         });
-//         if (!response.ok) throw new Error("Player not found on server");
-//         const data = await response.json();
-//         console.log(data);
-//         return new Player(data.newPlayer);
-//     } catch (error) {
-//         console.error("Failed to fetch player:", error);
-//         throw error;
-//     }
-// }
-
 export async function getPlayerByName(playerName) {
     try {
         const response = await fetch (`http://localhost:3005/players/getPlayer/${playerName}`,{
